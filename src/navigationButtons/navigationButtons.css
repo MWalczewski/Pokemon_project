@@ -1,0 +1,10 @@
+.buttons-container {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+}
+
+.link {
+  text-decoration: none;
+  color: #034f84;
+}

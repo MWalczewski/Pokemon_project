@@ -1,0 +1,29 @@
+.pokemon-page-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 20px;
+}
+
+.pokemon-section {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.info-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 20px;
+}
+.buttons-section {
+  margin: 15px 0px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.link {
+  text-decoration: none;
+  color: #034f84;
+}

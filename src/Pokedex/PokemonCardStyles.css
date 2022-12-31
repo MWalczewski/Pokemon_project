@@ -1,0 +1,13 @@
+.PokeIMG {
+  height: 250px;
+  width: 250px;
+}
+
+.pokemonCard:hover {
+  transform: scale(1.2);
+}
+
+.link {
+  text-decoration: none;
+  color: #034f84;
+}

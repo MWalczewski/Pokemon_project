@@ -1,0 +1,19 @@
+/* .main-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+} */
+
+.navi-container {
+  margin: 15px 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.grid-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 20px;
+}
