@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
+import { useState, useEffect, useRef } from "react";
 import PokemonCard from "./PokemonCard";
 import Paginate from "./Pagination";
 import { Box, Container, Grid } from "@mui/material";
@@ -16,23 +15,51 @@ const Pokedex = ({ pokedex, setPokedex, fighters, setFighters }) => {
   const DETAILS_URL = "https://pokeapi.co/api/v2/pokemon/";
   const LOCAL_URL = "http://localhost:8000/pokemons";
 
-  useEffect(() => {
-    axios.get(`${BASE_URL}`).then((response) => {
-      setPokemonList(response.data.results.map((pokemon) => pokemon.name));
-    });
-    fetch(`${LOCAL_URL}`)
-      .then((response) => response.json())
-      .then((localPokemons) => {
-        setPokedex(localPokemons);
-      });
-  }, []);
+  const effectRan = useRef(false);
+
+  // fetch pokemon names
+  // useEffect(() => {
+  //   if (effectRan.current === false) {
+  //     fetch(BASE_URL)
+  //       .then((response) => response.json())
+  //       .then((allPokemons) => {
+  //         setPokemonList(allPokemons.results.map((pokemon) => pokemon.name));
+  //       })
+  //       .then((effectRan.current = true));
+  //   }
+  // }, []);
+
+  // fetch local pokemons
+  // useEffect(() => {
+  //   fetch(`${LOCAL_URL}`)
+  //     .then((responseLocal) => responseLocal.json())
+  //     .then((dataLocal) => {
+  //       setLocalPokemons(dataLocal);
+  //     });
+  // }, []);
 
   useEffect(() => {
-    // setPokedex([]);
+    if (effectRan.current === false) {
+      Promise.all([fetch(BASE_URL), fetch(LOCAL_URL)])
+        .then(([responseBASEURL, responseLOCALURL]) =>
+          Promise.all([responseBASEURL.json(), responseLOCALURL.json()])
+        )
+        .then(([dataBASEURL, dataLOCALURL]) => {
+          setPokemonList(dataBASEURL.results.map((pokemon) => pokemon.name));
+          setPokedex(dataLOCALURL);
+        })
+        .then((effectRan.current = true));
+    }
+  }, []);
+
+  //  fetch API pokemons
+  useEffect(() => {
     pokemonList.forEach(function (pokemonName) {
-      axios.get(`${DETAILS_URL}${pokemonName}`).then((response) => {
-        setPokedex((prev) => [...prev, response.data]);
-      });
+      fetch(`${DETAILS_URL}${pokemonName}`)
+        .then((response) => response.json())
+        .then((apiPOKE) => {
+          setPokedex((prev) => [...prev, apiPOKE]);
+        });
     });
     setLoading(false);
   }, [pokemonList]);
@@ -68,7 +95,6 @@ const Pokedex = ({ pokedex, setPokedex, fighters, setFighters }) => {
             changePage={changePage}
             className="pagination"
           />
-          ,
         </Box>
         <div>
           {filter === "" ? (
